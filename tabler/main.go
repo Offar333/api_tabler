@@ -41,6 +41,7 @@ func main() {
 	r.HandleFunc("/api/createUser", controllers.CreateUser).Methods("POST")
 	r.HandleFunc("/api/updateProfile", controllers.UpdateProfile).Methods("PUT")
 	r.HandleFunc("/api/uploadAvatar", controllers.UploadAvatar).Methods("POST")
+	r.HandleFunc("/api/login", controllers.CheckLogin).Methods("POST")
 	//-----------------------------------------------------------------------
 
 	log.Println("Server Online!")
