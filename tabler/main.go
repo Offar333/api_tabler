@@ -6,19 +6,19 @@ package main
 import (
 	"database/sql"
 	"log"
+	"mypackages/controllers"
 	"net/http" //TO HANDLE HTTP REQUESTS
-	"tabler/backend/mypackages/controllers"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
 )
 
 //Room Struct
-type Room struct {
-	ID    string `json:"id"`
+/* type Room struct {
+	ID    int    `json:"id"`
 	Title string `json:"title"`
 	Desc  string `json:"desc"`
-}
+} */
 
 var db *sql.DB
 var err error

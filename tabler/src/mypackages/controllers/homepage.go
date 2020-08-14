@@ -8,11 +8,11 @@ import (
 )
 
 //Room Struct
-type Room struct {
-	//ID    int    `json:"id"`
-	//Title string `json:"title"`
-	//Desc  string `json:"desc"`
-}
+/* type Room struct {
+	ID    int    `json:"id"`
+	Title string `json:"title"`
+	Desc  string `json:"desc"`
+} */
 
 //HomePage exported
 func HomePage(w http.ResponseWriter, r *http.Request) {
@@ -38,7 +38,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 
 	for result.Next() {
 		var room Room
-		//err := result.Scan(&room.ID, &room.Title, &room.Desc)
+		err := result.Scan(&room.ID, &room.Title, &room.Desc)
 		//err := result.Scan(&room.Desc)
 
 		if err != nil {
@@ -48,5 +48,6 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(rooms)
+	w.WriteHeader(http.StatusOK)
 
 }
