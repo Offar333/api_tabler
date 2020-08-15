@@ -7,16 +7,10 @@ import (
 	"net/http"
 )
 
-//Room Struct
-/* type Room struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
-	Desc  string `json:"desc"`
-} */
-
 //HomePage exported
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
+	EnableCors(&w)
 	var rooms []Room
 
 	db, err = sql.Open("mysql", "user_tester:123456@tcp(127.0.0.1:3000)/tabler_db")
@@ -27,7 +21,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	result, err := db.Query("SELECT ID_MESA, TITULO_MESA, DESC_MESA FROM mesa")
+	result, err := db.Query("SELECT ID_MESA, ADM_MESA, TITULO_MESA, DESC_MESA, QTDEJOG_MESA, FORMA_MESA, STATUS_MESA  FROM mesa")
 
 	if err != nil {
 
@@ -38,8 +32,18 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 
 	for result.Next() {
 		var room Room
-		err := result.Scan(&room.ID, &room.Title, &room.Desc)
-		//err := result.Scan(&room.Desc)
+
+		/*
+			ID      int    `json:"id"`
+			AdmMesa string `json:"admMesa"`
+			Title   string `json:"title"`
+			Desc    string `json:"desc"`
+			QtdeJog int    `json:"qtdeJog"`
+			Formato string `json:"formato"`
+			Status  int    `json:"status"`
+		*/
+
+		err := result.Scan(&room.ID, &room.AdmMesa, &room.Title, &room.Desc, &room.QtdeJog, &room.Formato, &room.Status)
 
 		if err != nil {
 			panic(err.Error())

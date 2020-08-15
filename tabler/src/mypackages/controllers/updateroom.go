@@ -9,6 +9,7 @@ import (
 
 //UpdateRoom FUNCTION
 func UpdateRoom(w http.ResponseWriter, r *http.Request) {
+	EnableCors(&w)
 
 	db, err = sql.Open("mysql", "user_tester:123456@tcp(127.0.0.1:3000)/tabler_db")
 
