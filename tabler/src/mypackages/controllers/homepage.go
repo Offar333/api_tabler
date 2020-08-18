@@ -9,7 +9,7 @@ import (
 //HomePage exported
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	EnableCors(&w)
+
 	var rooms []Room
 
 	db, err = sql.Open("mysql", "user_tester:123456@tcp(127.0.0.1:3000)/tabler_db")

@@ -11,7 +11,7 @@ import (
 //SearchRooms exported
 func SearchRooms(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	EnableCors(&w)
+
 	var rooms []Room
 	params := mux.Vars(r)
 

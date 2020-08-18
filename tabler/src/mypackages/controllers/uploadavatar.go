@@ -11,7 +11,7 @@ import (
 
 //UploadAvatar exported
 func UploadAvatar(w http.ResponseWriter, r *http.Request) {
-	EnableCors(&w)
+	w.Header().Set("Content-Type", "application/json")
 
 	var picPath string
 	var userName string

@@ -10,11 +10,12 @@ import (
 
 //CreateUser exported
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	EnableCors(&w)
+
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
 	db, err = sql.Open("mysql", "user_tester:123456@tcp(127.0.0.1:3000)/tabler_db")
 
-	stmtIns, err := db.Prepare("INSERT INTO usuario(NOME_USUAR, APELIDO_USUAR, SENHA_USUAR, EMAIL_USUAR) VALUES (?,?,?,?,?)")
+	stmtIns, err := db.Prepare("INSERT INTO usuario(NOME_USUAR, APELIDO_USUAR, SENHA_USUAR, EMAIL_USUAR) VALUES (?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
