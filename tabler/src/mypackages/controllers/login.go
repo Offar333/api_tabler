@@ -9,15 +9,6 @@ import (
 	"strconv"
 )
 
-//User Struct
-type User struct {
-	ID         string `json:"id"`
-	Nome       string `json:"nome"`
-	Apelido    string `json:"apelido"`
-	Email      string `json:"email"`
-	AvatarPath string `json:"avatarpath"`
-}
-
 //CheckLogin exported
 func CheckLogin(w http.ResponseWriter, r *http.Request) {
 	EnableCors(&w)

@@ -3,7 +3,6 @@ package controllers
 import (
 	"database/sql"
 	"encoding/json"
-	"log"
 	"net/http"
 )
 
@@ -14,8 +13,6 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	var rooms []Room
 
 	db, err = sql.Open("mysql", "user_tester:123456@tcp(127.0.0.1:3000)/tabler_db")
-
-	log.Println("Bateu aqui!")
 
 	if err != nil {
 		panic(err.Error())

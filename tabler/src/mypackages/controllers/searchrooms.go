@@ -25,8 +25,6 @@ func SearchRooms(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	defer result.Close()
-
 	var room Room
 
 	for result.Next() {
@@ -37,6 +35,8 @@ func SearchRooms(w http.ResponseWriter, r *http.Request) {
 
 		rooms = append(rooms, room)
 	}
+
+	defer result.Close()
 
 	json.NewEncoder(w).Encode(rooms)
 	w.WriteHeader(http.StatusOK)
