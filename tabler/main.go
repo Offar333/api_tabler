@@ -11,6 +11,7 @@ import (
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 )
 
 //Room Struct
@@ -45,6 +46,7 @@ func main() {
 	//-----------------------------------------------------------------------
 
 	log.Println("Server Online!")
-	log.Fatal(http.ListenAndServe(":8000", r))
+	handler := cors.Default().Handler(r)
+	log.Fatal(http.ListenAndServe(":8000", handler))
 
 }

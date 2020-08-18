@@ -19,3 +19,8 @@ type User struct {
 	Email      string `json:"email"`
 	AvatarPath string `json:"avatarpath"`
 }
+
+//DoesExist Struct
+type DoesExist struct {
+	JaExiste string `json:"jaExiste"`
+}

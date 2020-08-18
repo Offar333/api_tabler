@@ -3,10 +3,8 @@ package controllers
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
-	"strconv"
 )
 
 //CheckLogin exported
@@ -42,6 +40,7 @@ func CheckLogin(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			panic(err.Error())
 		}
+
 		for userData.Next() {
 
 			err := userData.Scan(&user.ID, &user.Nome, &user.Apelido, &user.Email, &user.AvatarPath)
@@ -49,10 +48,15 @@ func CheckLogin(w http.ResponseWriter, r *http.Request) {
 				panic(err.Error())
 			}
 		}
+
 		json.NewEncoder(w).Encode(user)
 		w.WriteHeader(http.StatusOK)
+
 	} else {
-		fmt.Println("doesExist? = " + strconv.Itoa(doesExist))
+		res := DoesExist{JaExiste: "UsuarioInexistente"}
+
+		json.NewEncoder(w).Encode(res)
+		w.WriteHeader(http.StatusNotFound)
 	}
 
 }
