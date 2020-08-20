@@ -87,7 +87,9 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 
 	if isThereDm != 0 && mestreJoga == "1" {
 
-		fmt.Fprintf(w, "Já existe mestre nesta mesa!")
+		res := DoesExist{JaExiste: "mestre"}
+		json.NewEncoder(w).Encode(res)
+		w.WriteHeader(http.StatusFound)
 
 	} else { //IF THERE'S NO DM, INSERT THE PLAYER IN THE ROOM
 
@@ -96,7 +98,6 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 			panic(err.Error())
 		}
 
-		fmt.Fprintf(w, "Jogador inserido na mesa!")
 		w.WriteHeader(http.StatusOK)
 	}
 

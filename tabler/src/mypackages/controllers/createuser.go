@@ -25,6 +25,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	apelidoUsuar := keyVal["APELIDO_USUAR"]
 	senhaUsuar := keyVal["SENHA_USUAR"]
 	emailUsuar := keyVal["EMAIL_USUAR"]
+	avatarUsuar := "C:/FotoPadrao"
 
 	var doesExistApelido int
 	var doesExistEmail int
@@ -52,12 +53,12 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	stmtIns, err := db.Prepare("INSERT INTO usuario(NOME_USUAR, APELIDO_USUAR, SENHA_USUAR, EMAIL_USUAR) VALUES (?,?,?,?)")
+	stmtIns, err := db.Prepare("INSERT INTO usuario(NOME_USUAR, APELIDO_USUAR, SENHA_USUAR, EMAIL_USUAR, AVATAR_USUAR) VALUES (?,?,?,?,?)")
 	if err != nil {
 		panic(err.Error())
 	}
 
-	_, err = stmtIns.Exec(nomeUsuar, apelidoUsuar, senhaUsuar, emailUsuar)
+	_, err = stmtIns.Exec(nomeUsuar, apelidoUsuar, senhaUsuar, emailUsuar, avatarUsuar)
 	if err != nil {
 		panic(err.Error())
 	}

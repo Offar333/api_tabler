@@ -35,6 +35,7 @@ func CheckLogin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if doesExist != 0 {
+
 		userData, err := db.Query("SELECT ID_USUAR, NOME_USUAR, APELIDO_USUAR, EMAIL_USUAR, AVATAR_USUAR FROM usuario WHERE APELIDO_USUAR = ?", userName)
 
 		if err != nil {
