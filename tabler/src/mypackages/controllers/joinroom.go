@@ -27,6 +27,7 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 	idUsuar := keyVal["ID_USUAR"]
 	mestreJoga := keyVal["MESTRE_JOGA"]
 	charName := keyVal["NOMECHAR_JOGA"]
+	charClass := keyVal["CLASSECHAR_JOGA"]
 	userName := keyVal["UserName"]
 
 	sheetPath := "CharSheet/" + userName + "/" + charName
@@ -88,19 +89,19 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 
 	} else { //IF THERE'S NO DM, INSERT THE PLAYER IN THE ROOM
 
-		stmtIns, err := db.Prepare("INSERT INTO mesa_jogadores(ID_MESA, ID_USUAR, MESTRE_JOGA, FICHA_JOGA) VALUES (?,?,?,?)")
+		stmtIns, err := db.Prepare("INSERT INTO mesa_jogadores(ID_MESA, ID_USUAR, MESTRE_JOGA, FICHA_JOGA, NOMECHAR_JOGA, CLASSECHAR_JOGA) VALUES (?,?,?,?,?,?)")
 		if err != nil {
 			panic(err.Error())
 		}
 
 		/* _, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, "C:/SheetPath") */ //Tests
 
-		_, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, sheetPath)
+		_, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, sheetPath, charName, charClass)
 		if err != nil {
 			panic(err.Error())
 		}
 
-		res := DoesExist{JaExiste: "entrou_na_sala"}
+		res := DoesExist{JaExiste: "cadastrado"}
 		json.NewEncoder(w).Encode(res)
 		w.WriteHeader(http.StatusOK)
 	}

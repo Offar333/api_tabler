@@ -11,6 +11,21 @@ type Room struct {
 	Status  int    `json:"status"`
 }
 
+//RoomPlayers Struct
+type RoomPlayers struct {
+	//IDDungeonMaster int    `json:"idDungeonMaster"`
+	DungeonMaster string        `json:"dungeonMaster"`
+	TablesJoined  int           `json:"tablesJoined"`
+	Players       []PlayersInfo `json:"players"`
+}
+
+//PlayersInfo Struct
+type PlayersInfo struct {
+	PlayerName  string `json:"playerName"`
+	PlayerChar  string `json:"playerChar"`
+	PlayerClass string `json:"playerClass"`
+}
+
 //User Struct
 type User struct {
 	ID         string `json:"id"`

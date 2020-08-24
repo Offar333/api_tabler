@@ -36,7 +36,7 @@ func main() {
 	r.HandleFunc("/api/joinRoom", controllers.JoinRoom).Methods("POST")
 	r.HandleFunc("/api/updateRoom", controllers.UpdateRoom).Methods("PUT")
 	r.HandleFunc("/api/deleteRoom", controllers.DeleteRoom).Methods("DELETE")
-	r.HandleFunc("/api/roomData/{idMesa}", controllers.RoomData).Methods("GET")
+	r.HandleFunc("/api/roomData", controllers.RoomData).Methods("POST")
 	//-----------------------------------------------------------------------
 
 	//----------------------USER ROUTES--------------------------------------
