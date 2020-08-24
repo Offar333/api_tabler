@@ -39,32 +39,6 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 		roomData.DungeonMaster = "NO_DM"
 		roomData.TablesJoined = 0
 
-		//TESTING
-
-		roomData.Players = []PlayersInfo{
-			{
-				PlayerName:  "Teste_NOMEJOGADOR",
-				PlayerChar:  "Teste_CHAR",
-				PlayerClass: "Teste_CLASSE",
-			},
-			{
-				PlayerName:  "Teste_NOMEJOGADOR 2",
-				PlayerChar:  "Teste_CHAR 2",
-				PlayerClass: "Teste_CLASSE 2",
-			},
-			{
-				PlayerName:  "Teste_NOMEJOGADOR 3",
-				PlayerChar:  "Teste_CHAR 3",
-				PlayerClass: "Teste_CLASSE 3",
-			},
-		}
-
-		/*
-			roomData.Players.PlayerName = "Teste_NOMEJOGADOR"
-			roomData.Players.PlayerChar = "Teste_CHAR"
-			roomData.Players.PlayerClass = "Teste_CLASSE" */
-		//------------------------------------------------
-
 	} else if isThereDm != 0 {
 
 		var idDm int
@@ -95,15 +69,9 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 
 		defer dmInfo.Close()
 
-		//TESTING
-		/* roomData.Players.PlayerName = "Teste_NOMEJOGADOR"
-		roomData.Players.PlayerChar = "Teste_CHAR"
-		roomData.Players.PlayerClass = "Teste_CLASSE" */
-		//------------------------------------------------
-
 	}
 
-	//SECONT --> CHECK IF THERE ARE PLAYERS AT THE TABLE
+	//SECOND --> CHECK IF THERE ARE PLAYERS AT THE TABLE
 	var isTherePlayers int
 	_ = db.QueryRow("SELECT COUNT(*) FROM mesa_jogadores WHERE ID_MESA = ? AND MESTRE_JOGA = 0", idMesa).Scan(&isTherePlayers)
 
@@ -113,8 +81,9 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	if isTherePlayers == 0 {
-		//POPULATE THE STRUCT WHITH THE INFORMATION THAT THERE IS NO DM AVAILABLE
+	if isTherePlayers == 0 { //OK
+
+		//POPULATE THE STRUCT WHITH THE INFORMATION THAT THERE IS NO PLAYERS AT THE TABLE
 		roomData.Players = []PlayersInfo{
 			{
 				PlayerName:  "NO_PLAYERS",
@@ -123,15 +92,30 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 			},
 		}
 
-	} else if isTherePlayers != 0 {
+	} else if isTherePlayers != 0 { //OK
+
+		result, err := db.Query("SELECT a.NOME_USUAR, b.NOMECHAR_JOGA, b.CLASSECHAR_JOGA FROM usuario a "+
+			"INNER JOIN mesa_jogadores b ON a.ID_USUAR = b.ID_USUAR "+
+			"WHERE b.ID_MESA = ? AND b.NOMECHAR_JOGA <> '' ", idMesa)
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		var info PlayersInfo
+
+		for result.Next() {
+			err := result.Scan(&info.PlayerName, &info.PlayerChar, &info.PlayerClass)
+
+			if err != nil {
+				panic(err.Error())
+			}
+
+			roomData.Players = append(roomData.Players, info)
+
+		}
 
 	}
-
-	/*
-		SELECT a.NOME_USUAR, b.NOMECHAR_JOGA, b.CLASSECHAR_JOGA FROM usuario a
-		INNER JOIN mesa_jogadores b ON a.ID_USUAR = b.ID_USUAR
-		WHERE b.ID_MESA = 1 AND b.NOMECHAR_JOGA <> ''
-	*/
 
 	json.NewEncoder(w).Encode(roomData)
 	w.WriteHeader(http.StatusOK)
