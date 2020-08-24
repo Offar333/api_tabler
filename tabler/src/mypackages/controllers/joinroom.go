@@ -70,11 +70,6 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 	tempFile.Write(fileBytes)
 	//------------------------------------------------------------------
 
-	stmtIns, err := db.Prepare("INSERT INTO mesa_jogadores(ID_MESA, ID_USUAR, MESTRE_JOGA, FICHA_JOGA) VALUES (?,?,?,?)")
-	if err != nil {
-		panic(err.Error())
-	}
-
 	//CHECK IF THERE'S ALREADY A DM AT THE TABLE
 	var isThereDm int
 	_ = db.QueryRow("SELECT COUNT(*) FROM mesa_jogadores WHERE ID_MESA = ? AND MESTRE_JOGA = 1", idMesa).Scan(&isThereDm)
@@ -93,11 +88,20 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 
 	} else { //IF THERE'S NO DM, INSERT THE PLAYER IN THE ROOM
 
+		stmtIns, err := db.Prepare("INSERT INTO mesa_jogadores(ID_MESA, ID_USUAR, MESTRE_JOGA, FICHA_JOGA) VALUES (?,?,?,?)")
+		if err != nil {
+			panic(err.Error())
+		}
+
+		/* _, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, "C:/SheetPath") */ //Tests
+
 		_, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, sheetPath)
 		if err != nil {
 			panic(err.Error())
 		}
 
+		res := DoesExist{JaExiste: "entrou_na_sala"}
+		json.NewEncoder(w).Encode(res)
 		w.WriteHeader(http.StatusOK)
 	}
 

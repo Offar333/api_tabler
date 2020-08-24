@@ -36,6 +36,7 @@ func main() {
 	r.HandleFunc("/api/joinRoom", controllers.JoinRoom).Methods("POST")
 	r.HandleFunc("/api/updateRoom", controllers.UpdateRoom).Methods("PUT")
 	r.HandleFunc("/api/deleteRoom", controllers.DeleteRoom).Methods("DELETE")
+	r.HandleFunc("/api/roomData/{idMesa}", controllers.RoomData).Methods("GET")
 	//-----------------------------------------------------------------------
 
 	//----------------------USER ROUTES--------------------------------------
@@ -43,10 +44,15 @@ func main() {
 	r.HandleFunc("/api/updateProfile", controllers.UpdateProfile).Methods("PUT")
 	r.HandleFunc("/api/uploadAvatar", controllers.UploadAvatar).Methods("POST")
 	r.HandleFunc("/api/login", controllers.CheckLogin).Methods("POST")
+	r.HandleFunc("/api/userData", controllers.UserData).Methods("POST")
 	//-----------------------------------------------------------------------
 
+	c := cors.New(cors.Options{
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+	})
+
+	handler := c.Handler(r)
 	log.Println("Server Online!")
-	handler := cors.Default().Handler(r)
 	log.Fatal(http.ListenAndServe(":8000", handler))
 
 }
