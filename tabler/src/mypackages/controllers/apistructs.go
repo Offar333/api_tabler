@@ -13,7 +13,6 @@ type Room struct {
 
 //RoomPlayers Struct
 type RoomPlayers struct {
-	//IDDungeonMaster int    `json:"idDungeonMaster"`
 	DungeonMaster string        `json:"dungeonMaster"`
 	TablesJoined  int           `json:"tablesJoined"`
 	Players       []PlayersInfo `json:"players"`

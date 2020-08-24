@@ -58,9 +58,11 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 				PlayerClass: "Teste_CLASSE 3",
 			},
 		}
-		/* roomData.Players.PlayerName = "Teste_NOMEJOGADOR"
-		roomData.Players.PlayerChar = "Teste_CHAR"
-		roomData.Players.PlayerClass = "Teste_CLASSE" */
+
+		/*
+			roomData.Players.PlayerName = "Teste_NOMEJOGADOR"
+			roomData.Players.PlayerChar = "Teste_CHAR"
+			roomData.Players.PlayerClass = "Teste_CLASSE" */
 		//------------------------------------------------
 
 	} else if isThereDm != 0 {
@@ -100,6 +102,36 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 		//------------------------------------------------
 
 	}
+
+	//SECONT --> CHECK IF THERE ARE PLAYERS AT THE TABLE
+	var isTherePlayers int
+	_ = db.QueryRow("SELECT COUNT(*) FROM mesa_jogadores WHERE ID_MESA = ? AND MESTRE_JOGA = 0", idMesa).Scan(&isTherePlayers)
+
+	if err != nil {
+
+		panic(err.Error())
+
+	}
+
+	if isTherePlayers == 0 {
+		//POPULATE THE STRUCT WHITH THE INFORMATION THAT THERE IS NO DM AVAILABLE
+		roomData.Players = []PlayersInfo{
+			{
+				PlayerName:  "NO_PLAYERS",
+				PlayerChar:  "NO_PLAYERS",
+				PlayerClass: "NO_PLAYERS",
+			},
+		}
+
+	} else if isTherePlayers != 0 {
+
+	}
+
+	/*
+		SELECT a.NOME_USUAR, b.NOMECHAR_JOGA, b.CLASSECHAR_JOGA FROM usuario a
+		INNER JOIN mesa_jogadores b ON a.ID_USUAR = b.ID_USUAR
+		WHERE b.ID_MESA = 1 AND b.NOMECHAR_JOGA <> ''
+	*/
 
 	json.NewEncoder(w).Encode(roomData)
 	w.WriteHeader(http.StatusOK)
