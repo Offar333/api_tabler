@@ -11,8 +11,6 @@ import (
 func RoomData(w http.ResponseWriter, r *http.Request) {
 	var roomData RoomPlayers
 
-	//var room Room
-
 	db, err = sql.Open("mysql", "user_tester:123456@tcp(127.0.0.1:3000)/tabler_db")
 
 	body, err := ioutil.ReadAll(r.Body)
@@ -114,6 +112,8 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 			roomData.Players = append(roomData.Players, info)
 
 		}
+
+		defer result.Close()
 
 	}
 

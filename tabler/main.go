@@ -37,6 +37,7 @@ func main() {
 	r.HandleFunc("/api/updateRoom", controllers.UpdateRoom).Methods("PUT")
 	r.HandleFunc("/api/deleteRoom", controllers.DeleteRoom).Methods("DELETE")
 	r.HandleFunc("/api/roomData", controllers.RoomData).Methods("POST")
+	r.HandleFunc("/api/roomFormat", controllers.RoomFormat).Methods("GET")
 	//-----------------------------------------------------------------------
 
 	//----------------------USER ROUTES--------------------------------------

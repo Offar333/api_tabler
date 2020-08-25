@@ -25,6 +25,11 @@ type PlayersInfo struct {
 	PlayerClass string `json:"playerClass"`
 }
 
+//GameFormats Struct
+type GameFormats struct {
+	DescFormat string `json:"descFormat"`
+}
+
 //User Struct
 type User struct {
 	ID         string `json:"id"`
