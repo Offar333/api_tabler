@@ -4,13 +4,26 @@ import (
 	"database/sql"
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
+	"os"
+
+	"github.com/joho/godotenv"
 )
 
 //UpdateProfile exported
 func UpdateProfile(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
 
-	db, err = sql.Open("mysql", "user_tester:123456@tcp(127.0.0.1:3000)/tabler_db")
+	//NEED TO MAKE A FUNCTION FOR THIS, BUT I DUNNO HOW YET ):
+	//LOADING .env
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	//CONNECTING TO DB
+	db, err = sql.Open(os.Getenv("DB_DIALECT"), os.Getenv("DB_CONN"))
+	//-----------------------------------------------------------------
 
 	var user User
 

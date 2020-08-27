@@ -7,16 +7,26 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"github.com/joho/godotenv"
 )
 
 //UploadAvatar exported
 func UploadAvatar(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
+	//NEED TO MAKE A FUNCTION FOR THIS, BUT I DUNNO HOW YET ):
+	//LOADING .env
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+	//CONNECTING TO DB
+	db, err = sql.Open(os.Getenv("DB_DIALECT"), os.Getenv("DB_CONN"))
+	//-----------------------------------------------------------------
+
 	var picPath string
 	var userName string
-
-	db, err = sql.Open("mysql", "user_tester:123456@tcp(127.0.0.1:3000)/tabler_db")
 
 	userName = "Offar"
 
@@ -24,7 +34,7 @@ func UploadAvatar(w http.ResponseWriter, r *http.Request) {
 
 	//---------------------CREATING FOLDER--------------------
 	//Sets folder path and folder name
-	_, err := os.Stat(picPath)
+	_, err = os.Stat(picPath)
 
 	//Checks if that folder path already exists
 	//If the nested folder exists, do nothing

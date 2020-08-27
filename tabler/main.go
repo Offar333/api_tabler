@@ -14,13 +14,6 @@ import (
 	"github.com/rs/cors"
 )
 
-//Room Struct
-/* type Room struct {
-	ID    int    `json:"id"`
-	Title string `json:"title"`
-	Desc  string `json:"desc"`
-} */
-
 var db *sql.DB
 var err error
 

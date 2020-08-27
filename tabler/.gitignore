@@ -4,3 +4,4 @@ pkg/
 src/mypackages/github.com/
 src/mypackages/github.com/rs
 roomData.PNG
+.env
