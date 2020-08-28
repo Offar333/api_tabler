@@ -41,6 +41,10 @@ func main() {
 	r.HandleFunc("/api/userData", controllers.UserData).Methods("POST")
 	//-----------------------------------------------------------------------
 
+	//----------------------TEST ROUTES--------------------------------------
+	r.HandleFunc("/api/jwtTest", controllers.TestJwt).Methods("POST")
+	//-----------------------------------------------------------------------
+
 	c := cors.New(cors.Options{
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
 	})

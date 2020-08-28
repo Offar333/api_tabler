@@ -26,7 +26,7 @@ func CreateRoom(w http.ResponseWriter, r *http.Request) {
 	db, err = sql.Open(os.Getenv("DB_DIALECT"), os.Getenv("DB_CONN"))
 	//-----------------------------------------------------------------
 
-	stmtIns, err := db.Prepare("INSERT INTO mesa(ADM_MESA, TITULO_MESA, DESC_MESA, QTDEJOG_MESA, FORMA_MESA, STATUS_MESA) VALUES (?,?,?,?,?,?) ")
+	stmtIns, err := db.Prepare("INSERT INTO mesa(ADM_MESA, TITULO_MESA, DESC_MESA, QTDEJOG_MESA, FORMA_MESA, STATUS_MESA, LVLINIC_MESA, EXPJOGO_MESA) VALUES (?,?,?,?,?,?,?,?) ")
 
 	if err != nil {
 		panic(err.Error())
@@ -45,8 +45,10 @@ func CreateRoom(w http.ResponseWriter, r *http.Request) {
 	qtdejogMesa := keyVal["QTDEJOG_MESA"]
 	formaMesa := keyVal["FORMA_MESA"]
 	statusMesa := keyVal["STATUS_MESA"]
+	lvlinicMesa := keyVal["LVLINIC_MESA"]
+	expJogoMesa := keyVal["EXPJOGO_MESA"]
 
-	_, err = stmtIns.Exec(admMesa, tituloMesa, descMesa, qtdejogMesa, formaMesa, statusMesa)
+	_, err = stmtIns.Exec(admMesa, tituloMesa, descMesa, qtdejogMesa, formaMesa, statusMesa, lvlinicMesa, expJogoMesa)
 	if err != nil {
 		panic(err.Error())
 	}

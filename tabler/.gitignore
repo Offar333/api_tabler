@@ -5,3 +5,5 @@ src/mypackages/github.com/
 src/mypackages/github.com/rs
 roomData.PNG
 .env
+src/github.com/dgrijalva/jwt-go
+src/github.com/joho/godotenv
