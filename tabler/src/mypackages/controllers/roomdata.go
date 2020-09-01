@@ -33,9 +33,20 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 	keyVal := make(map[string]string)
 	json.Unmarshal(body, &keyVal)
 	idMesa := keyVal["ID_MESA"]
+	idUser := keyVal["ID_USUAR"]
 
-	//FIRST --> CHECK IF THERE`S ALREADY A DM AT THE TABLE
+	//CHECK IF THE PLAYER IS AT THE TABLE
+	roomData.AlreadyIn = "no"
+	var isAtTable int
+	_ = db.QueryRow("SELECT COUNT(*) FROM mesa_jogadores WHERE ID_MESA = ? AND ID_USUAR = ?", idMesa, idUser).Scan(&isAtTable)
+
+	if isAtTable != 0 {
+		roomData.AlreadyIn = "yes"
+	}
+
+	//CHECK IF THERE`S ALREADY A DM AT THE TABLE
 	var isThereDm int
+
 	_ = db.QueryRow("SELECT COUNT(*) FROM mesa_jogadores WHERE ID_MESA = ? AND MESTRE_JOGA = 1", idMesa).Scan(&isThereDm)
 
 	if err != nil {
@@ -63,10 +74,12 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 			panic(err.Error())
 		}
 		for dmInfo.Next() {
+
 			err := dmInfo.Scan(&idDm, &roomData.DungeonMaster)
 			if err != nil {
 				panic(err.Error())
 			}
+
 		}
 
 		_ = db.QueryRow("SELECT COUNT(*) FROM mesa_jogadores WHERE ID_USUAR = ? AND MESTRE_JOGA = 1", idDm).Scan(&roomData.TablesJoined)
@@ -81,7 +94,7 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	//SECOND --> CHECK IF THERE ARE PLAYERS AT THE TABLE
+	//CHECK IF THERE ARE PLAYERS AT THE TABLE
 	var isTherePlayers int
 	_ = db.QueryRow("SELECT COUNT(*) FROM mesa_jogadores WHERE ID_MESA = ? AND MESTRE_JOGA = 0", idMesa).Scan(&isTherePlayers)
 
@@ -130,6 +143,7 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 	}
 
 	json.NewEncoder(w).Encode(roomData)
+
 	w.WriteHeader(http.StatusOK)
 
 }

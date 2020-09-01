@@ -3,7 +3,6 @@ package controllers
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -26,7 +25,7 @@ func CreateRoom(w http.ResponseWriter, r *http.Request) {
 	db, err = sql.Open(os.Getenv("DB_DIALECT"), os.Getenv("DB_CONN"))
 	//-----------------------------------------------------------------
 
-	stmtIns, err := db.Prepare("INSERT INTO mesa(ADM_MESA, TITULO_MESA, DESC_MESA, QTDEJOG_MESA, FORMA_MESA, STATUS_MESA, LVLINIC_MESA, EXPJOGO_MESA) VALUES (?,?,?,?,?,?,?,?) ")
+	stmtIns, err := db.Prepare("INSERT INTO mesa(ADM_MESA, TITULO_MESA, DESC_MESA, QTDEJOG_MESA, FORMA_MESA, STATUS_MESA, LVLINIC_MESA, EXPJOGO_MESA, LINK_CHAT) VALUES (?,?,?,?,?,?,?,?,?) ")
 
 	if err != nil {
 		panic(err.Error())
@@ -47,12 +46,33 @@ func CreateRoom(w http.ResponseWriter, r *http.Request) {
 	statusMesa := keyVal["STATUS_MESA"]
 	lvlinicMesa := keyVal["LVLINIC_MESA"]
 	expJogoMesa := keyVal["EXPJOGO_MESA"]
+	linkChat := keyVal["LINK_CHAT"]
 
-	_, err = stmtIns.Exec(admMesa, tituloMesa, descMesa, qtdejogMesa, formaMesa, statusMesa, lvlinicMesa, expJogoMesa)
+	_, err = stmtIns.Exec(admMesa, tituloMesa, descMesa, qtdejogMesa, formaMesa, statusMesa, lvlinicMesa, expJogoMesa, linkChat)
 	if err != nil {
 		panic(err.Error())
 	}
 
-	fmt.Fprintf(w, "Mesa criada com sucesso!")
+	result, err := db.Query("SELECT ID_MESA, ADM_MESA, TITULO_MESA, DESC_MESA, QTDEJOG_MESA, FORMA_MESA, STATUS_MESA, LVLINIC_MESA, EXPJOGO_MESA, LINK_CHAT  FROM mesa WHERE ID_MESA = LAST_INSERT_ID()")
+
+	if err != nil {
+
+		panic(err.Error())
+	}
+
+	defer result.Close()
+
+	var room Room
+
+	for result.Next() {
+
+		err := result.Scan(&room.ID, &room.AdmMesa, &room.Title, &room.Desc, &room.QtdeJog, &room.Formato, &room.Status, &room.LvlInic, &room.ExpJogo, &room.LinkChat)
+
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	json.NewEncoder(w).Encode(room)
 	w.WriteHeader(http.StatusOK)
 }

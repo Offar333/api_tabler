@@ -13,7 +13,7 @@ import (
 
 //CreateUser exported
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.Header().Set("Content-Type", "application/json")
 
 	//NEED TO MAKE A FUNCTION FOR THIS, BUT I DUNNO HOW YET ):
 	//LOADING .env

@@ -29,7 +29,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	result, err := db.Query("SELECT ID_MESA, ADM_MESA, TITULO_MESA, DESC_MESA, QTDEJOG_MESA, FORMA_MESA, STATUS_MESA  FROM mesa")
+	result, err := db.Query("SELECT ID_MESA, ADM_MESA, TITULO_MESA, DESC_MESA, QTDEJOG_MESA, FORMA_MESA, STATUS_MESA, LVLINIC_MESA, EXPJOGO_MESA  FROM mesa")
 
 	if err != nil {
 
@@ -41,17 +41,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 	for result.Next() {
 		var room Room
 
-		/*
-			ID      int    `json:"id"`
-			AdmMesa string `json:"admMesa"`
-			Title   string `json:"title"`
-			Desc    string `json:"desc"`
-			QtdeJog int    `json:"qtdeJog"`
-			Formato string `json:"formato"`
-			Status  int    `json:"status"`
-		*/
-
-		err := result.Scan(&room.ID, &room.AdmMesa, &room.Title, &room.Desc, &room.QtdeJog, &room.Formato, &room.Status)
+		err := result.Scan(&room.ID, &room.AdmMesa, &room.Title, &room.Desc, &room.QtdeJog, &room.Formato, &room.Status, &room.LvlInic, &room.ExpJogo)
 
 		if err != nil {
 			panic(err.Error())

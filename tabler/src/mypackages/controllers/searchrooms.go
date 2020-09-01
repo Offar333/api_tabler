@@ -30,7 +30,7 @@ func SearchRooms(w http.ResponseWriter, r *http.Request) {
 
 	searchKey := "%" + params["tituloMesa"] + "%"
 
-	result, err := db.Query("SELECT ID_MESA, TITULO_MESA, DESC_MESA FROM mesa WHERE TITULO_MESA LIKE ?", searchKey)
+	result, err := db.Query("SELECT ID_MESA, TITULO_MESA, DESC_MESA , LVLINIC_MESA, EXPJOGO_MESA FROM mesa WHERE TITULO_MESA LIKE ?", searchKey)
 
 	if err != nil {
 		panic(err.Error())
@@ -39,7 +39,7 @@ func SearchRooms(w http.ResponseWriter, r *http.Request) {
 	var room Room
 
 	for result.Next() {
-		err := result.Scan(&room.ID, &room.Title, &room.Desc)
+		err := result.Scan(&room.ID, &room.Title, &room.Desc, &room.LvlInic, &room.ExpJogo)
 		if err != nil {
 			panic(err.Error())
 		}
