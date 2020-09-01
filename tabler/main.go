@@ -39,6 +39,7 @@ func main() {
 	r.HandleFunc("/api/uploadAvatar", controllers.UploadAvatar).Methods("POST")
 	r.HandleFunc("/api/login", controllers.CheckLogin).Methods("POST")
 	r.HandleFunc("/api/userData", controllers.UserData).Methods("POST")
+	r.HandleFunc("/api/roomsJoined", controllers.RoomsJoined).Methods("POST")
 	//-----------------------------------------------------------------------
 
 	//----------------------TEST ROUTES--------------------------------------

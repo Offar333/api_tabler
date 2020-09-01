@@ -66,7 +66,7 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 
 		//POPULATE THE STRUCT WITH THE DM INFO
 		//RETURNS THE NAME OF THE DM AT THE TABLE
-		dmInfo, err := db.Query("SELECT a.ID_USUAR, a.NOME_USUAR AS MESTRE FROM usuario a "+
+		dmInfo, err := db.Query("SELECT a.ID_USUAR, a.APELIDO_USUAR AS MESTRE FROM usuario a "+
 			"INNER JOIN mesa_jogadores b ON a.ID_USUAR = b.ID_USUAR "+
 			"WHERE b.MESTRE_JOGA = 1 AND b.ID_MESA = ?", idMesa)
 
@@ -117,7 +117,7 @@ func RoomData(w http.ResponseWriter, r *http.Request) {
 
 	} else if isTherePlayers != 0 { //OK
 
-		result, err := db.Query("SELECT a.NOME_USUAR, b.NOMECHAR_JOGA, b.CLASSECHAR_JOGA FROM usuario a "+
+		result, err := db.Query("SELECT a.APELIDO_USUAR, b.NOMECHAR_JOGA, b.CLASSECHAR_JOGA FROM usuario a "+
 			"INNER JOIN mesa_jogadores b ON a.ID_USUAR = b.ID_USUAR "+
 			"WHERE b.ID_MESA = ? AND b.NOMECHAR_JOGA <> '' ", idMesa)
 

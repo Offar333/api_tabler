@@ -3,7 +3,6 @@ package controllers
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -42,7 +41,7 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 
 	sheetPath := "CharSheet/" + userName + "/" + charName
 
-	//---------------------CREATING FOLDER--------------------
+	/* //---------------------CREATING FOLDER--------------------
 	_, errFolder := os.Stat(sheetPath)
 
 	if os.IsNotExist(errFolder) {
@@ -51,9 +50,9 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 			log.Fatal(errFolder)
 		}
 	}
-	//--------------------------------------------------------
+	//-------------------------------------------------------- */
 
-	//----------------------SAVING FILE----------------------
+	/* //----------------------SAVING FILE----------------------
 	r.ParseMultipartForm(10 << 20)
 
 	file, handler, err := r.FormFile("myFile")
@@ -79,7 +78,7 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 		fmt.Println(err)
 	}
 	tempFile.Write(fileBytes)
-	//------------------------------------------------------------------
+	//------------------------------------------------------------------ */
 
 	//CHECK IF THERE'S ALREADY A DM AT THE TABLE
 	var isThereDm int
@@ -105,8 +104,12 @@ func JoinRoom(w http.ResponseWriter, r *http.Request) {
 		}
 
 		/* _, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, "C:/SheetPath") */ //Tests
+		if mestreJoga == "1" {
+			_, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, "Mestre", "Mestre", "Mestre")
+		} else {
+			_, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, sheetPath, charName, charClass)
+		}
 
-		_, err = stmtIns.Exec(idMesa, idUsuar, mestreJoga, sheetPath, charName, charClass)
 		if err != nil {
 			panic(err.Error())
 		}
