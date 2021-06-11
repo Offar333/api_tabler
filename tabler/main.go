@@ -8,6 +8,7 @@ import (
 	"log"
 	"mypackages/controllers"
 	"net/http" //TO HANDLE HTTP REQUESTS
+	“github.com/lib/pq”
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
