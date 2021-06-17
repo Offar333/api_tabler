@@ -8,7 +8,6 @@ import (
 	"log"
 	"mypackages/controllers"
 	"net/http" //TO HANDLE HTTP REQUESTS
-	
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/gorilla/mux"
@@ -41,6 +40,7 @@ func main() {
 	r.HandleFunc("/api/login", controllers.CheckLogin).Methods("POST")
 	r.HandleFunc("/api/userData", controllers.UserData).Methods("POST")
 	r.HandleFunc("/api/roomsJoined", controllers.RoomsJoined).Methods("POST")
+	r.HandleFunc("/api/roomsNotJoined", controllers.RoomsNotJoined).Methods("POST")
 	//-----------------------------------------------------------------------
 
 	//----------------------TEST ROUTES--------------------------------------
