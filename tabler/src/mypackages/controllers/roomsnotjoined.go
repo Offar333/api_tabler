@@ -36,7 +36,7 @@ func RoomsNotJoined(w http.ResponseWriter, r *http.Request) {
 	json.Unmarshal(body, &keyVal)
 	userName := keyVal["ID_USUAR"]
 
-	result, err := db.Query("SELECT a.ADM_MESA, a.ID_MESA, a.TITULO_MESA, a.DESC_MESA , a.LVLINIC_MESA, a.EXPJOGO_MESA, a.FORMA_MESA, a.LINK_CHAT, a.QTDEJOG_MESA, a.STATUS_MESA FROM mesa a "+
+	result, err := db.Query("SELECT DISTINCT a.ADM_MESA, a.ID_MESA, a.TITULO_MESA, a.DESC_MESA , a.LVLINIC_MESA, a.EXPJOGO_MESA, a.FORMA_MESA, a.LINK_CHAT, a.QTDEJOG_MESA, a.STATUS_MESA FROM mesa a "+
 		"INNER JOIN mesa_jogadores b ON a.ID_MESA = b.ID_MESA WHERE b.ID_USUAR NOT IN (?)", userName)
 
 	if err != nil {
